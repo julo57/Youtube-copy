@@ -2,18 +2,32 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
-    background-color: #ff0000;
-    color: #fff;
+    padding: 3px;
+    background-color: #ffffff;
+    color: #100101;
 }
 
-.navbar-logo h1 {
-    margin: 0;
+.navbar-logo {
+    font-size: 1.5em;
+    font-weight: bold;
 }
 
 .navbar-search input {
     padding: 5px;
-    border: none;
-    border-radius: 3px;
-    width: 300px;
+    font-size: 1em;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 10px;
+}
+
+.navbar-links a {
+    text-decoration: none; /* Usunięcie podkreślenia */
+    color: black; /* Kolor czarny */
+    transition: color 0.3s ease; /* Płynne przejście koloru */
+}
+
+.navbar-links a:hover {
+    color: blue; /* Kolor niebieski po najechaniu */
 }

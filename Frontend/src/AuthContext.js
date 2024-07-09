@@ -1,12 +1,13 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
 
-    const login = (username) => {
-        setUser({ username });
+    const login = (username, password) => {
+        // Logika logowania
+        setUser({ username }); // Zakładam, że logowanie było pomyślne
     };
 
     const logout = () => {
@@ -20,4 +21,6 @@ export const AuthProvider = ({ children }) => {
     );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+    return useContext(AuthContext);
+};

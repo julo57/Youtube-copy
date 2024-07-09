@@ -15,11 +15,11 @@ const Sidebar = () => {
             </button>
             <div className="sidebar-content">
                 <ul>
-                    <li>Home</li>
-                    <li>Trending</li>
-                    <li>Subscriptions</li>
-                    <li>Library</li>
-                    <li>History</li>
+                    <li><span>Home</span></li>
+                    <li><span>Trending</span></li>
+                    <li><span>Subscriptions</span></li>
+                    <li><span>Library</span></li>
+                    <li><span>History</span></li>
                 </ul>
             </div>
         </div>
