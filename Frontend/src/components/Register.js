@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
+import '../css/Register.css'; // Importujemy CSS
 
 const Register = () => {
     const [username, setUsername] = useState('');
@@ -36,25 +37,29 @@ const Register = () => {
     }
 
     return (
-        <div id="register-form" className="form-container">
+        <div className="form-container">
             <h2>Register</h2>
             <form onSubmit={handleRegister}>
-                <label htmlFor="reg-username">Username</label>
-                <input 
-                    type="text" 
-                    id="reg-username" 
-                    value={username} 
-                    onChange={(e) => setUsername(e.target.value)} 
-                    required 
-                />
-                <label htmlFor="reg-password">Password</label>
-                <input 
-                    type="password" 
-                    id="reg-password" 
-                    value={password} 
-                    onChange={(e) => setPassword(e.target.value)} 
-                    required 
-                />
+                <div className="form-group">
+                    <label htmlFor="reg-username">Username</label>
+                    <input 
+                        type="text" 
+                        id="reg-username" 
+                        value={username} 
+                        onChange={(e) => setUsername(e.target.value)} 
+                        required 
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="reg-password">Password</label>
+                    <input 
+                        type="password" 
+                        id="reg-password" 
+                        value={password} 
+                        onChange={(e) => setPassword(e.target.value)} 
+                        required 
+                    />
+                </div>
                 <button type="submit">Register</button>
             </form>
         </div>
