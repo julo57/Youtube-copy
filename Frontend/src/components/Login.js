@@ -33,6 +33,7 @@ const Login = () => {
                 <label htmlFor="password">Password</label>
                 <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                 <button type="submit">Login</button>
+                
             </form>
         </div>
     );
