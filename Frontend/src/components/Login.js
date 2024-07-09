@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useAuth } from '../AuthContext';
+import { useHistory } from 'react-router-dom';
 
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const { login } = useAuth();
+    const history = useHistory();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -13,6 +17,8 @@ const Login = () => {
                 password
             });
             console.log('Login successful:', response.data);
+            login(username);
+            history.push('/profile');
         } catch (error) {
             console.error('There was an error logging in!', error);
         }
