@@ -1,4 +1,3 @@
-com\youtubeclone\config\WebConfig.class
 com\youtubeclone\repository\VideoRepository.class
 com\youtubeclone\service\UserService.class
 com\youtubeclone\controller\VideoController.class
@@ -8,4 +7,3 @@ com\youtubeclone\model\User.class
 com\youtubeclone\model\Video.class
 com\youtubeclone\controller\AuthController.class
 com\youtubeclone\YoutubeCloneApplication.class
-com\youtubeclone\config\WebConfig$1.class
