@@ -23,11 +23,24 @@
 }
 
 .navbar-links a {
-    text-decoration: none; /* Usunięcie podkreślenia */
-    color: black; /* Kolor czarny */
-    transition: color 0.3s ease; /* Płynne przejście koloru */
+    text-decoration: none;
+    color: black;
+    transition: color 0.3s ease;
 }
 
 .navbar-links a:hover {
-    color: blue; /* Kolor niebieski po najechaniu */
+    color: blue;
+}
+
+.dark-mode .navbar {
+    background-color: #444;
+    color: #f5f5f5;
+}
+
+.dark-mode .navbar-links a {
+    color: #f5f5f5;
+}
+
+.dark-mode .navbar-links a:hover {
+    color: #1e90ff;
 }

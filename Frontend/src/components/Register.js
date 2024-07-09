@@ -11,20 +11,28 @@ const Register = () => {
 
     const handleRegister = async (e) => {
         e.preventDefault();
+
+        if (password.length < 8) {
+            alert('Password must be at least 8 characters long');
+            return;
+        }
+
+        // Additional validation rules can be added here
+
         try {
             const response = await axios.post('http://localhost:8080/api/auth/register', {
                 username,
                 password
             });
             console.log('Registration successful:', response.data);
-            setRedirectToProfile(true); // Ustawia przekierowanie po udanej rejestracji
+            setRedirectToProfile(true);
         } catch (error) {
             console.error('There was an error registering!', error);
         }
     };
 
     if (redirectToProfile || user) {
-        return <Redirect to="/Profile" />;
+        return <Redirect to="/UserProfile" />;
     }
 
     return (

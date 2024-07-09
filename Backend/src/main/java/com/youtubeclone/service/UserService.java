@@ -27,4 +27,9 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
+
+    public boolean isPasswordValid(String password) {
+        // Example: password should be at least 8 characters long
+        return password.length() >= 8;
+    }
 }

@@ -37,3 +37,16 @@
 .sidebar.closed .sidebar-content li span {
     opacity: 0;
 }
+
+.dark-mode .sidebar {
+    background-color: #333;
+    color: #f5f5f5;
+}
+
+.dark-mode .sidebar-toggle {
+    color: #f5f5f5;
+}
+
+.dark-mode .sidebar-content li {
+    color: #f5f5f5;
+}

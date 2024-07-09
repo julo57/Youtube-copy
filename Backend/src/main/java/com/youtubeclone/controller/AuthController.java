@@ -28,6 +28,11 @@ public class AuthController {
         if (userService.checkIfUserExists(user.getUsername())) {
             return ResponseEntity.badRequest().body("Username is already taken");
         }
+
+        if (!userService.isPasswordValid(user.getPassword())) {
+            return ResponseEntity.badRequest().body("Password does not meet the criteria");
+        }
+
         userService.saveUser(user);
         return ResponseEntity.ok("User registered successfully");
     }
