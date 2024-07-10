@@ -1,6 +1,7 @@
 import React from 'react';
 import '../css/Navbar.css';
 import { Link } from 'react-router-dom';
+import ProfileMenu from './ProfileMenu'; // Import ProfileMenu
 
 const Navbar = () => {
     return (
@@ -12,10 +13,11 @@ const Navbar = () => {
             <div className="navbar-search">
                 <input type="text" placeholder="Search..." />
             </div>
-            <div className="navbar-links"> {/* Upewnij się, że klasa jest poprawna */}
+            <div className="navbar-links">
                 <Link to="/login">Login</Link>
                 <Link to="/register">Register</Link>
                 <Link to="/profile">User Profile</Link>
+                <ProfileMenu /> {/* Dodaj ProfileMenu */}
             </div>
         </nav>
     );

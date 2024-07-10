@@ -8,7 +8,8 @@ import Home from './components/Home';
 import UserProfile from './components/UserProfile';
 import { AuthProvider } from './AuthContext';
 import './css/App.css';
-import './css/Login.css'; // Importujemy CSS dla loginu
+import './css/Login.css';
+import './css/Register.css'; // Dodaj import dla CSS dla rejestracji
 
 function App() {
     const [darkMode, setDarkMode] = useState(false);
@@ -28,7 +29,7 @@ function App() {
     return (
         <AuthProvider>
             <Router>
-                <div className="app">
+                <div className={`app ${darkMode ? 'dark-mode' : ''}`}>
                     <Navbar />
                     <div className="main-content">
                         <Sidebar toggleDarkMode={toggleDarkMode} />

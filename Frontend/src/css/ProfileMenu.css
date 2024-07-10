@@ -1,0 +1,154 @@
+.profile-menu-container {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-icon {
+    cursor: pointer;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.profile-menu {
+    position: absolute;
+    right: 0;
+    top: 50px;
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 5px;
+    overflow: hidden;
+    z-index: 1000;
+    width: 200px;
+}
+
+.profile-menu-header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #444;
+}
+
+.profile-info h4 {
+    margin: 0;
+    font-size: 1em;
+}
+
+.profile-info p {
+    margin: 0;
+    font-size: 0.8em;
+    color: #ccc;
+}
+
+.profile-menu-links {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-menu-links a, .profile-menu-links button {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px;
+    border-bottom: 1px solid #444;
+    transition: background-color 0.3s ease;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+}
+
+.profile-menu-links a:hover, .profile-menu-links button:hover {
+    background-color: #555;
+}
+
+.profile-menu-links a:last-child, .profile-menu-links button:last-child {
+    border-bottom: none;
+}
+
+.logout-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+}
+
+.logout-modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.logout-modal-content p {
+    margin-bottom: 20px;
+}
+
+.logout-modal-content button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.logout-modal-content button:first-child {
+    background-color: #4caf50;
+    color: #fff;
+}
+
+.logout-modal-content button:last-child {
+    background-color: #f44336;
+    color: #fff;
+}
+
+/* Dark Mode */
+.dark-mode .profile-icon {
+    background-color: #555;
+    color: #f5f5f5;
+}
+
+.dark-mode .profile-menu {
+    background-color: #555;
+    border: 1px solid #666;
+}
+
+.dark-mode .profile-menu-header {
+    border-bottom: 1px solid #666;
+}
+
+.dark-mode .profile-info p {
+    color: #aaa;
+}
+
+.dark-mode .profile-menu-links a, 
+.dark-mode .profile-menu-links button {
+    color: #f5f5f5;
+    border-bottom: 1px solid #666;
+}
+
+.dark-mode .profile-menu-links a:hover, 
+.dark-mode .profile-menu-links button:hover {
+    background-color: #666;
+}
+
+.dark-mode .logout-modal-content {
+    background: #444;
+}
+
+.dark-mode .logout-modal-content button:first-child {
+    background-color: #4caf50;
+    color: #fff;
+}
+
+.dark-mode .logout-modal-content button:last-child {
+    background-color: #f44336;
+    color: #fff;
+}

@@ -1,22 +1,27 @@
 import React, { useState } from 'react';
-import { useAuth } from '../AuthContext';
+import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-import '../css/Login.css';
+import { useAuth } from '../AuthContext';
+import '../css/Login.css'; // Importujemy CSS
 
 const Login = () => {
     const { user, login } = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [setRedirectToProfile] = useState(false);
+    const [redirectToProfile, setRedirectToProfile] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        login(username, password);
-        setRedirectToProfile(true);
+        try {
+            await login(username, password);
+            setRedirectToProfile(true);
+        } catch (error) {
+            console.error('There was an error logging in!', error);
+        }
     };
 
-    if (user) {
-        return <Redirect to="/Profile" />;
+    if (user || redirectToProfile) {
+        return <Redirect to="/profile" />;
     }
 
     return (
@@ -30,6 +35,7 @@ const Login = () => {
                         id="username" 
                         value={username} 
                         onChange={(e) => setUsername(e.target.value)} 
+                        required
                     />
                 </div>
                 <div className="form-group">
@@ -39,6 +45,7 @@ const Login = () => {
                         id="password" 
                         value={password} 
                         onChange={(e) => setPassword(e.target.value)} 
+                        required
                     />
                 </div>
                 <button type="submit">Login</button>
