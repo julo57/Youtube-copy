@@ -1,3 +1,4 @@
+/* Common Styles */
 .profile-menu-container {
     position: relative;
     display: inline-block;
@@ -6,8 +7,6 @@
 .profile-icon {
     cursor: pointer;
     padding: 10px;
-    background-color: #333;
-    color: #fff;
     border-radius: 5px;
 }
 
@@ -15,9 +14,6 @@
     position: absolute;
     right: 0;
     top: 50px;
-    background-color: #333;
-    color: #fff;
-    border: 1px solid #444;
     border-radius: 5px;
     overflow: hidden;
     z-index: 1000;
@@ -28,7 +24,7 @@
     display: flex;
     align-items: center;
     padding: 10px;
-    border-bottom: 1px solid #444;
+    border-bottom: 1px solid;
 }
 
 .profile-info h4 {
@@ -39,7 +35,6 @@
 .profile-info p {
     margin: 0;
     font-size: 0.8em;
-    color: #ccc;
 }
 
 .profile-menu-links {
@@ -48,10 +43,9 @@
 }
 
 .profile-menu-links a, .profile-menu-links button {
-    color: #fff;
     text-decoration: none;
     padding: 10px;
-    border-bottom: 1px solid #444;
+    border-bottom: 1px solid;
     transition: background-color 0.3s ease;
     background: none;
     border: none;
@@ -60,7 +54,7 @@
 }
 
 .profile-menu-links a:hover, .profile-menu-links button:hover {
-    background-color: #555;
+    background-color: #dcdcdc;
 }
 
 .profile-menu-links a:last-child, .profile-menu-links button:last-child {
@@ -81,7 +75,6 @@
 }
 
 .logout-modal-content {
-    background: #fff;
     padding: 20px;
     border-radius: 5px;
     text-align: center;
@@ -109,46 +102,86 @@
     color: #fff;
 }
 
+/* Light Mode */
+:root {
+    --background-color: #fff;
+    --text-color: #000;
+    --border-color: #ccc;
+    --hover-background-color: #f5f5f5;
+    --modal-background-color: #fff;
+}
+
+.profile-icon {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.profile-menu {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+.profile-menu-header {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.profile-info p {
+    color: #666;
+}
+
+.profile-menu-links a, .profile-menu-links button {
+    color: var(--text-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.profile-menu-links a:hover, .profile-menu-links button:hover {
+    background-color: var(--hover-background-color);
+}
+
+.logout-modal-content {
+    background: var(--modal-background-color);
+}
+
 /* Dark Mode */
-.dark-mode .profile-icon {
-    background-color: #555;
-    color: #f5f5f5;
+body.dark-mode {
+    --background-color: #333;
+    --text-color: #fff;
+    --border-color: #444;
+    --hover-background-color: #555;
+    --modal-background-color: #444;
 }
 
-.dark-mode .profile-menu {
-    background-color: #555;
-    border: 1px solid #666;
+body.dark-mode .profile-icon {
+    background-color: var(--background-color);
+    color: var(--text-color);
 }
 
-.dark-mode .profile-menu-header {
-    border-bottom: 1px solid #666;
+body.dark-mode .profile-menu {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
 }
 
-.dark-mode .profile-info p {
+body.dark-mode .profile-menu-header {
+    border-bottom: 1px solid var(--border-color);
+}
+
+body.dark-mode .profile-info p {
     color: #aaa;
 }
 
-.dark-mode .profile-menu-links a, 
-.dark-mode .profile-menu-links button {
-    color: #f5f5f5;
-    border-bottom: 1px solid #666;
+body.dark-mode .profile-menu-links a, 
+body.dark-mode .profile-menu-links button {
+    color: var(--text-color);
+    border-bottom: 1px solid var(--border-color);
 }
 
-.dark-mode .profile-menu-links a:hover, 
-.dark-mode .profile-menu-links button:hover {
-    background-color: #666;
+body.dark-mode .profile-menu-links a:hover, 
+body.dark-mode .profile-menu-links button:hover {
+    background-color: var(--hover-background-color);
 }
 
-.dark-mode .logout-modal-content {
-    background: #444;
-}
-
-.dark-mode .logout-modal-content button:first-child {
-    background-color: #4caf50;
-    color: #fff;
-}
-
-.dark-mode .logout-modal-content button:last-child {
-    background-color: #f44336;
-    color: #fff;
+body.dark-mode .logout-modal-content {
+    background: var(--modal-background-color);
 }

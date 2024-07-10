@@ -6,6 +6,8 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Home from './components/Home';
 import UserProfile from './components/UserProfile';
+import ProfileMenu from './components/ProfileMenu';
+import Settings from './components/Settings'; 
 import { AuthProvider } from './AuthContext';
 import './css/App.css';
 import './css/Login.css';
@@ -38,7 +40,10 @@ function App() {
                                 <Route path="/login" component={Login} />
                                 <Route path="/register" component={Register} />
                                 <Route path="/profile" component={UserProfile} />
-                                <Route path="/" component={Home} />
+                                <Route path="/profile-menu" component={ProfileMenu} />
+                                <Route path="/settings" component={Settings} />
+                                <Route exact path="/" component={Home} />
+                                <Route path="*" render={() => <h1>404: Page not found</h1>} />
                             </Switch>
                         </div>
                     </div>
