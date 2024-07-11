@@ -5,6 +5,7 @@ import com.youtubeclone.service.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -15,10 +16,17 @@ public class VideoController {
     @Autowired
     private VideoService videoService;
 
-    @PostMapping
-    public ResponseEntity<Video> addVideo(@RequestBody Video video) {
-        Video savedVideo = videoService.save(video);
-        return ResponseEntity.ok(savedVideo);
+    @PostMapping("/upload")
+    public ResponseEntity<String> uploadVideo(@RequestParam("file") MultipartFile file,
+                                              @RequestParam("title") String title,
+                                              @RequestParam("description") String description,
+                                              @RequestParam("username") String username) {
+        try {
+            videoService.saveVideo(file, title, description, username);
+            return ResponseEntity.ok("Video uploaded successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Video upload failed: " + e.getMessage());
+        }
     }
 
     @GetMapping
