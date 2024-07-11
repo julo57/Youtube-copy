@@ -1,0 +1,48 @@
+/* Watch.css */
+
+.watch-container {
+    padding: 20px;
+}
+
+.error {
+    color: red;
+    margin-bottom: 20px;
+}
+
+.video-details {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.video-details h2 {
+    margin: 0 0 10px;
+    color: #ffffff;
+}
+
+.video-details p {
+    margin: 0 0 10px;
+    color: #bbbbbb;
+}
+
+.video-details video {
+    width: 100%;
+    border-radius: 10px;
+    background-color: #000;
+}
+
+/* Dark mode variables */
+body.dark-mode .watch-container {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+body.dark-mode .video-details {
+    background-color: #333;
+}
+
+body.dark-mode .video-details h2, 
+body.dark-mode .video-details p {
+    color: #ffffff;
+}

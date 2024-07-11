@@ -1,0 +1,66 @@
+/* Channel.css */
+
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+.channel-container {
+    padding: 20px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.error {
+    color: var(--error-color);
+    margin-bottom: 20px;
+}
+
+.videos-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.video-card {
+    background-color: var(--card-background);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.video-card h2 {
+    margin: 0 0 10px;
+    color: var(--text-color);
+}
+
+.video-card p {
+    margin: 0 0 10px;
+    color: var(--secondary-text-color);
+}
+
+.video-card video {
+    width: 100%;
+    border-radius: 10px;
+    background-color: #000;
+}
+
+/* Dark mode variables */
+body.dark-mode {
+    --background-color: #121212;
+    --text-color: #ffffff;
+    --card-background: #333;
+    --secondary-text-color: #bbbbbb;
+    --error-color: #ff4444;
+}
+
+/* Light mode variables (default) */
+body {
+    --background-color: #ffffff;
+    --text-color: #000000;
+    --card-background: #f0f0f0;
+    --secondary-text-color: #666666;
+    --error-color: #ff4444;
+}

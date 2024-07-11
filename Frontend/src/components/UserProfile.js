@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../AuthContext';
+import '../css/UserProfile.css';
 
 const UserProfile = () => {
     const { user } = useAuth();
@@ -8,6 +10,7 @@ const UserProfile = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [error, setError] = useState('');
+    const history = useHistory();
 
     const handleFileChange = (e) => {
         setVideoFile(e.target.files[0]);
@@ -16,7 +19,7 @@ const UserProfile = () => {
     const handleUpload = async (e) => {
         e.preventDefault();
         const formData = new FormData();
-        formData.append('file', videoFile); // ensure 'file' matches the parameter in the backend
+        formData.append('file', videoFile);
         formData.append('title', title);
         formData.append('description', description);
         formData.append('username', user.username);
@@ -30,18 +33,14 @@ const UserProfile = () => {
             console.log('Upload successful:', response.data);
         } catch (error) {
             if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
                 console.error('Response error:', error.response.data);
                 console.error('Response status:', error.response.status);
                 console.error('Response headers:', error.response.headers);
                 setError(`Server responded with status ${error.response.status}: ${error.response.data}`);
             } else if (error.request) {
-                // The request was made but no response was received
                 console.error('Request error:', error.request);
                 setError('No response received from the server. Please check your network connection.');
             } else {
-                // Something happened in setting up the request that triggered an Error
                 console.error('Error:', error.message);
                 setError(`Error in setting up the request: ${error.message}`);
             }
@@ -49,15 +48,19 @@ const UserProfile = () => {
         }
     };
 
+    const handleGoToChannel = () => {
+        history.push('/channel');
+    };
+
     return (
-        <div>
+        <div className="user-profile-container">
             <h1>User Profile</h1>
             {user ? (
                 <div>
                     <p>Welcome, {user.username}!</p>
-                    {error && <div style={{ color: 'red' }}>{error}</div>}
+                    {error && <div className="error">{error}</div>}
                     <form onSubmit={handleUpload}>
-                        <div>
+                        <div className="form-group">
                             <label htmlFor="title">Title:</label>
                             <input
                                 type="text"
@@ -67,7 +70,7 @@ const UserProfile = () => {
                                 required
                             />
                         </div>
-                        <div>
+                        <div className="form-group">
                             <label htmlFor="description">Description:</label>
                             <textarea
                                 id="description"
@@ -76,7 +79,7 @@ const UserProfile = () => {
                                 required
                             />
                         </div>
-                        <div>
+                        <div className="form-group">
                             <label htmlFor="video">Video File:</label>
                             <input
                                 type="file"
@@ -86,8 +89,9 @@ const UserProfile = () => {
                                 required
                             />
                         </div>
-                        <button type="submit">Upload Video</button>
+                        <button type="submit" className="upload-button">Upload Video</button>
                     </form>
+                    <button onClick={handleGoToChannel} className="channel-button">Go to My Channel</button>
                 </div>
             ) : (
                 <p>Please log in to see your profile.</p>

@@ -8,10 +8,10 @@ import Home from './components/Home';
 import UserProfile from './components/UserProfile';
 import ProfileMenu from './components/ProfileMenu';
 import Settings from './components/Settings'; 
+import Channel from './components/Channel';
 import { AuthProvider } from './AuthContext';
 import './css/App.css';
-import './css/Login.css';
-import './css/Register.css'; // Dodaj import dla CSS dla rejestracji
+
 
 function App() {
     const [darkMode, setDarkMode] = useState(false);
@@ -42,6 +42,8 @@ function App() {
                                 <Route path="/profile" component={UserProfile} />
                                 <Route path="/profile-menu" component={ProfileMenu} />
                                 <Route path="/settings" component={Settings} />
+                                <Route path="/channel" component={Channel} />
+                                <Route path="/home" component={Home} />
                                 <Route exact path="/" component={Home} />
                                 <Route path="*" render={() => <h1>404: Page not found</h1>} />
                             </Switch>

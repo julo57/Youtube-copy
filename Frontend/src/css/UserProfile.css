@@ -1,0 +1,101 @@
+/* UserProfile.css */
+
+.user-profile-container {
+    padding: 20px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.error {
+    color: var(--error-color);
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--label-color);
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background-color: var(--input-background);
+    color: var(--input-text);
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--input-border-focus);
+}
+
+.upload-button,
+.channel-button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--button-background);
+    color: var(--button-text);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.upload-button:hover,
+.channel-button:hover {
+    background-color: var(--button-background-hover);
+}
+
+.channel-button {
+    background-color: var(--secondary-button-background);
+    margin-left: 10px;
+}
+
+.channel-button:hover {
+    background-color: var(--secondary-button-background-hover);
+}
+
+/* Dark mode variables */
+body.dark-mode {
+    --background-color: #121212;
+    --text-color: #ffffff;
+    --label-color: #cccccc;
+    --border-color: #444;
+    --input-background: #333;
+    --input-text: #ffffff;
+    --input-border-focus: #555;
+    --button-background: #4caf50;
+    --button-text: #ffffff;
+    --button-background-hover: #45a049;
+    --secondary-button-background: #008cba;
+    --secondary-button-background-hover: #007bb5;
+    --error-color: #ff4444;
+}
+
+/* Light mode variables (default) */
+body {
+    --background-color: #ffffff;
+    --text-color: #000000;
+    --label-color: #666666;
+    --border-color: #ccc;
+    --input-background: #ffffff;
+    --input-text: #000000;
+    --input-border-focus: #999;
+    --button-background: #4caf50;
+    --button-text: #ffffff;
+    --button-background-hover: #45a049;
+    --secondary-button-background: #008cba;
+    --secondary-button-background-hover: #007bb5;
+    --error-color: #ff4444;
+}
