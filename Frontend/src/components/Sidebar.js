@@ -1,31 +1,36 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import '../css/Sidebar.css';
 
 const Sidebar = ({ toggleDarkMode }) => {
     const [isOpen, setIsOpen] = useState(true);
     const location = useLocation();
+    const history = useHistory();
 
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
+    };
+
+    const handleNavigation = (path) => {
+        history.push(path);
     };
 
     const renderMenuItems = () => {
         if (location.pathname === '/Settings') {
             return (
                 <ul>
-                    <li>Konto</li>
-                    <li>Prędkość odtwarzania</li>
+                    <li onClick={() => handleNavigation('/Settings/Account')}>Konto</li>
+                    <li onClick={() => handleNavigation('/Settings/PlaybackSpeed')}>Prędkość odtwarzania</li>
                 </ul>
             );
         } else {
             return (
                 <ul>
-                    <li>Home</li>
-                    <li>Trending</li>
-                    <li>Subscriptions</li>
-                    <li>Library</li>
-                    <li>History</li>
+                    <li onClick={() => handleNavigation('/')}>Home</li>
+                    <li onClick={() => handleNavigation('/Trending')}>Trending</li>
+                    <li onClick={() => handleNavigation('/Subscriptions')}>Subscriptions</li>
+                    <li onClick={() => handleNavigation('/Library')}>Library</li>
+                    <li onClick={() => handleNavigation('/History')}>History</li>
                 </ul>
             );
         }
