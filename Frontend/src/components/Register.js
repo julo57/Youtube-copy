@@ -33,7 +33,7 @@ const Register = () => {
     };
 
     if (redirectToProfile || user) {
-        return <Redirect to="/UserProfile" />;
+        return <Redirect to="/Login" />;
     }
 
     return (

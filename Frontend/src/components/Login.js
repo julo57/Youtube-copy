@@ -2,20 +2,23 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
-import '../css/Login.css'; // Importujemy CSS
+import '../css/Login.css'; // Import CSS
 
 const Login = () => {
     const { user, login } = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
     const [redirectToProfile, setRedirectToProfile] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log("Login attempt with username:", username, "and password:", password); // Log data
         try {
             await login(username, password);
             setRedirectToProfile(true);
         } catch (error) {
+            setError('There was an error logging in. Please check your credentials.');
             console.error('There was an error logging in!', error);
         }
     };
@@ -27,6 +30,7 @@ const Login = () => {
     return (
         <div className="login-container">
             <h2>Login</h2>
+            {error && <div className="error">{error}</div>}
             <form className="login-form" onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="username">Username</label>
