@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';  // Import Link for navigation
+import { Link } from 'react-router-dom';
 import axios from 'axios';
-import '../css/Home.css'; // Make sure to create and import Home.css for styling
+import '../css/Home.css';
 
 const Home = () => {
     const [videos, setVideos] = useState([]);
@@ -11,7 +11,13 @@ const Home = () => {
         const fetchVideos = async () => {
             try {
                 const response = await axios.get('http://localhost:8080/api/videos/all');
-                setVideos(response.data);
+                console.log('Videos fetched successfully:', response.data); // Log the response
+                if (Array.isArray(response.data)) {
+                    setVideos(response.data);
+                } else {
+                    setError('Unexpected response format.');
+                    console.error('Unexpected response format:', response.data);
+                }
             } catch (error) {
                 if (error.response) {
                     console.error('Response error:', error.response.data);
@@ -33,11 +39,14 @@ const Home = () => {
     }, []);
 
     const getRandomVideos = (videos, count) => {
+        if (!Array.isArray(videos)) {
+            return [];
+        }
         const shuffled = videos.sort(() => 0.5 - Math.random());
         return shuffled.slice(0, count);
     };
 
-    const randomVideos = getRandomVideos(videos, 5); // Display 5 random videos
+    const randomVideos = getRandomVideos(videos, 5);
 
     return (
         <div className="home-container">

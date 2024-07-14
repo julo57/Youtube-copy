@@ -10,6 +10,7 @@ import ProfileMenu from './components/ProfileMenu';
 import Settings from './components/Settings'; 
 import Channel from './components/Channel';
 import { AuthProvider } from './AuthContext';
+import VideoDetail from './components/VideoDetail';
 import './css/App.css';
 
 
@@ -37,6 +38,7 @@ function App() {
                         <Sidebar toggleDarkMode={toggleDarkMode} />
                         <div className="page-content">
                             <Switch>
+                                <Route path="/Watch/:id" component={VideoDetail} />
                                 <Route path="/login" component={Login} />
                                 <Route path="/register" component={Register} />
                                 <Route path="/profile" component={UserProfile} />
