@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../AuthContext'; // Ensure you have an AuthContext to provide user details
 
-
 const VideoDetail = () => {
     const { id } = useParams();
     const { user } = useAuth(); // Get the authenticated user
@@ -13,6 +12,7 @@ const VideoDetail = () => {
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
     const [error, setError] = useState('');
+    const [subscribed, setSubscribed] = useState(false);
 
     useEffect(() => {
         const fetchVideo = async () => {
@@ -31,8 +31,16 @@ const VideoDetail = () => {
     }, [id]);
 
     const handleLike = async () => {
+        if (!user) {
+            setError('You must be logged in to like.');
+            return;
+        }
         try {
-            await axios.post(`http://localhost:8080/api/videos/${id}/like`);
+            await axios.post(`http://localhost:8080/api/videos/${id}/like`, { username: user.username }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
             setLikes(likes + 1);
         } catch (error) {
             console.error('Error liking the video:', error);
@@ -40,8 +48,16 @@ const VideoDetail = () => {
     };
 
     const handleDislike = async () => {
+        if (!user) {
+            setError('You must be logged in to dislike.');
+            return;
+        }
         try {
-            await axios.post(`http://localhost:8080/api/videos/${id}/dislike`);
+            await axios.post(`http://localhost:8080/api/videos/${id}/dislike`, { username: user.username }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
             setDislikes(dislikes + 1);
         } catch (error) {
             console.error('Error disliking the video:', error);
@@ -58,12 +74,33 @@ const VideoDetail = () => {
             const response = await axios.post(`http://localhost:8080/api/videos/${id}/comment`, {
                 text: newComment,
                 username: user.username // Include the username of the authenticated user
+            }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             });
             setComments([...comments, response.data]);
             setNewComment('');
         } catch (error) {
             console.error('Error adding a comment:', error);
             setError('Error adding a comment. Please try again.');
+        }
+    };
+
+    const handleSubscribe = async () => {
+        if (!user) {
+            setError('You must be logged in to subscribe.');
+            return;
+        }
+        try {
+            await axios.post(`http://localhost:8080/api/videos/subscribe`, { subscriber: user.username, subscribedTo: video.username }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            setSubscribed(true);
+        } catch (error) {
+            console.error('Error subscribing:', error);
         }
     };
 
@@ -80,6 +117,7 @@ const VideoDetail = () => {
                     <div className="video-actions">
                         <button onClick={handleLike}>Like ({likes})</button>
                         <button onClick={handleDislike}>Dislike ({dislikes})</button>
+                        {!subscribed && <button onClick={handleSubscribe}>Subscribe</button>}
                     </div>
                     <div className="comments-section">
                         <h2>Comments</h2>

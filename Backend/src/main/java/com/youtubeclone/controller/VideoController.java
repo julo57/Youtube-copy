@@ -1,6 +1,7 @@
 package com.youtubeclone.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -62,22 +63,24 @@ public class VideoController {
     }
 
     @PostMapping("/{id}/like")
-    public ResponseEntity<Void> likeVideo(@PathVariable Long id) {
+    public ResponseEntity<Void> likeVideo(@PathVariable Long id, @RequestBody Map<String, String> request) {
         try {
-            videoService.likeVideo(id); // Adjusted to not expect a return value
+            String username = request.get("username");
+            videoService.likeVideo(id, username);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
-            return ResponseEntity.status(500).build();
+            return ResponseEntity.status(500).body(null);
         }
     }
 
     @PostMapping("/{id}/dislike")
-    public ResponseEntity<Void> dislikeVideo(@PathVariable Long id) {
+    public ResponseEntity<Void> dislikeVideo(@PathVariable Long id, @RequestBody Map<String, String> request) {
         try {
-            videoService.dislikeVideo(id); // Adjusted to not expect a return value
+            String username = request.get("username");
+            videoService.dislikeVideo(id, username);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
-            return ResponseEntity.status(500).build();
+            return ResponseEntity.status(500).body(null);
         }
     }
 
@@ -86,6 +89,18 @@ public class VideoController {
         try {
             Comment savedComment = videoService.addComment(id, comment);
             return ResponseEntity.ok(savedComment);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @PostMapping("/subscribe")
+    public ResponseEntity<Void> subscribeToUser(@RequestBody Map<String, String> request) {
+        try {
+            String subscriber = request.get("subscriber");
+            String subscribedTo = request.get("subscribedTo");
+            videoService.subscribeUser(subscriber, subscribedTo);
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(500).body(null);
         }
