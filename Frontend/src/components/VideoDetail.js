@@ -13,6 +13,7 @@ const VideoDetail = () => {
     const [newComment, setNewComment] = useState('');
     const [error, setError] = useState('');
     const [subscribed, setSubscribed] = useState(false);
+    const [userLikeStatus, setUserLikeStatus] = useState(null); // 'like', 'dislike', or null
 
     useEffect(() => {
         const fetchVideo = async () => {
@@ -22,13 +23,21 @@ const VideoDetail = () => {
                 setLikes(response.data.likes);
                 setDislikes(response.data.dislikes);
                 setComments(response.data.comments);
+
+                if (user) {
+                    // Fetch the user's like/dislike status for the video
+                    const likeStatusResponse = await axios.get(`http://localhost:8080/api/videos/${id}/user-like-status`, {
+                        params: { username: user.username }
+                    });
+                    setUserLikeStatus(likeStatusResponse.data.status); // 'like', 'dislike', or null
+                }
             } catch (error) {
                 setError('Error fetching video details.');
                 console.error(error);
             }
         };
         fetchVideo();
-    }, [id]);
+    }, [id, user]);
 
     const handleLike = async () => {
         if (!user) {
@@ -42,6 +51,10 @@ const VideoDetail = () => {
                 }
             });
             setLikes(likes + 1);
+            if (userLikeStatus === 'dislike') {
+                setDislikes(dislikes - 1);
+            }
+            setUserLikeStatus('like');
         } catch (error) {
             console.error('Error liking the video:', error);
         }
@@ -59,6 +72,10 @@ const VideoDetail = () => {
                 }
             });
             setDislikes(dislikes + 1);
+            if (userLikeStatus === 'like') {
+                setLikes(likes - 1);
+            }
+            setUserLikeStatus('dislike');
         } catch (error) {
             console.error('Error disliking the video:', error);
         }
@@ -115,8 +132,8 @@ const VideoDetail = () => {
                         Your browser does not support the video tag.
                     </video>
                     <div className="video-actions">
-                        <button onClick={handleLike}>Like ({likes})</button>
-                        <button onClick={handleDislike}>Dislike ({dislikes})</button>
+                        <button onClick={handleLike} disabled={userLikeStatus === 'like'}>Like ({likes})</button>
+                        <button onClick={handleDislike} disabled={userLikeStatus === 'dislike'}>Dislike ({dislikes})</button>
                         {!subscribed && <button onClick={handleSubscribe}>Subscribe</button>}
                     </div>
                     <div className="comments-section">
