@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from '../AuthContext'; // Ensure you have an AuthContext to provide user details
+import { useAuth } from '../AuthContext';
+import '../css/VideoDetail.css';
 
 const VideoDetail = () => {
     const { id } = useParams();
-    const { user } = useAuth(); // Get the authenticated user
+    const { user } = useAuth();
     const [video, setVideo] = useState(null);
     const [likes, setLikes] = useState(0);
     const [dislikes, setDislikes] = useState(0);
@@ -14,7 +15,7 @@ const VideoDetail = () => {
     const [error, setError] = useState('');
     const [subscribed, setSubscribed] = useState(false);
     const [subscriptionCount, setSubscriptionCount] = useState(0);
-    const [userLikeStatus, setUserLikeStatus] = useState(null); // 'like', 'dislike', or null
+    const [userLikeStatus, setUserLikeStatus] = useState(null);
 
     useEffect(() => {
         const fetchVideo = async () => {
@@ -25,22 +26,19 @@ const VideoDetail = () => {
                 setDislikes(response.data.dislikes);
                 setComments(response.data.comments);
 
-                // Fetch subscription count
                 const subResponse = await axios.get(`http://localhost:8080/api/videos/subscriptions/count/${response.data.username}`);
                 setSubscriptionCount(subResponse.data);
 
-                // Check if the user is subscribed
                 if (user) {
                     const checkSubResponse = await axios.get(`http://localhost:8080/api/videos/check-subscription`, {
                         params: { subscriber: user.username, subscribedTo: response.data.username }
                     });
                     setSubscribed(checkSubResponse.data);
 
-                    // Fetch the user's like/dislike status for the video
                     const likeStatusResponse = await axios.get(`http://localhost:8080/api/videos/${id}/user-like-status`, {
                         params: { username: user.username }
                     });
-                    setUserLikeStatus(likeStatusResponse.data.status); // 'like', 'dislike', or null
+                    setUserLikeStatus(likeStatusResponse.data.status);
                 }
             } catch (error) {
                 setError('Error fetching video details.');
@@ -101,7 +99,7 @@ const VideoDetail = () => {
         try {
             const response = await axios.post(`http://localhost:8080/api/videos/${id}/comment`, {
                 text: newComment,
-                username: user.username // Include the username of the authenticated user
+                username: user.username
             }, {
                 headers: {
                     'Content-Type': 'application/json'
@@ -139,8 +137,8 @@ const VideoDetail = () => {
             {error && <div className="error">{error}</div>}
             {video && (
                 <>
-                    <h1>{video.title}</h1>
-                    <video width="640" height="360" controls>
+                    <h1 className="video-title">{video.title}</h1>
+                    <video className="video-player" width="640" height="360" controls>
                         <source src={`http://localhost:8080${video.url}`} type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
@@ -155,6 +153,7 @@ const VideoDetail = () => {
                         <h2>Comments</h2>
                         <form onSubmit={handleCommentSubmit}>
                             <textarea
+                                className="comment-textarea"
                                 value={newComment}
                                 onChange={(e) => setNewComment(e.target.value)}
                                 placeholder="Add a comment..."

@@ -1,0 +1,142 @@
+/* VideoDetail.css */
+
+body {
+    background-color: #ffffff;
+    color: #000000;
+    font-family: 'Roboto', sans-serif;
+}
+
+body.dark-mode {
+    background-color: #181818;
+    color: #ffffff;
+}
+
+.video-detail-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .video-detail-container {
+    background-color: #212121;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.video-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #000000;
+}
+
+body.dark-mode .video-title {
+    color: #ffffff;
+}
+
+.video-player {
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    background-color: #000000;
+}
+
+.video-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.video-actions button {
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 4px;
+}
+
+.video-actions button:hover {
+    background-color: #cc0000;
+}
+
+.video-actions button:disabled {
+    background-color: #444444;
+    color: #a0a0a0;
+    cursor: not-allowed;
+}
+
+.video-actions .subscription-button {
+    background-color: #3ea6ff;
+    color: white;
+}
+
+.video-actions .subscription-button:hover {
+    background-color: #0073e6;
+}
+
+.comments-section {
+    margin-top: 40px;
+}
+
+.comments-section h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.comment-textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #444444;
+    background-color: #ffffff;
+    color: #000000;
+    resize: none;
+}
+
+body.dark-mode .comment-textarea {
+    background-color: #121212;
+    color: white;
+}
+
+.comment-textarea::placeholder {
+    color: #aaaaaa;
+}
+
+.comments-list {
+    margin-top: 20px;
+}
+
+.comments-list .comment {
+    border-bottom: 1px solid #444444;
+    padding: 10px 0;
+    color: #000000;
+}
+
+body.dark-mode .comments-list .comment {
+    color: #ffffff;
+}
+
+.comments-list .comment p {
+    margin: 0 0 5px;
+}
+
+.comments-list .comment small {
+    color: #606060;
+}
+
+body.dark-mode .comments-list .comment small {
+    color: #aaaaaa;
+}
+
+.error {
+    color: #ff4c4c;
+    margin-bottom: 20px;
+}
