@@ -99,8 +99,28 @@ public class VideoController {
         try {
             String subscriber = request.get("subscriber");
             String subscribedTo = request.get("subscribedTo");
-            videoService.subscribeUser(subscriber, subscribedTo);
+            videoService.toggleSubscription(subscriber, subscribedTo);
             return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @GetMapping("/subscriptions/count/{username}")
+    public ResponseEntity<Long> countSubscriptions(@PathVariable String username) {
+        try {
+            long count = videoService.countSubscriptions(username);
+            return ResponseEntity.ok(count);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @GetMapping("/check-subscription")
+    public ResponseEntity<Boolean> checkSubscription(@RequestParam("subscriber") String subscriber, @RequestParam("subscribedTo") String subscribedTo) {
+        try {
+            boolean isSubscribed = videoService.isSubscribed(subscriber, subscribedTo);
+            return ResponseEntity.ok(isSubscribed);
         } catch (Exception e) {
             return ResponseEntity.status(500).body(null);
         }

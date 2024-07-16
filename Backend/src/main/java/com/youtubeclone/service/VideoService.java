@@ -128,14 +128,23 @@ public class VideoService {
         return commentRepository.save(comment);
     }
 
-    public void subscribeUser(String subscriber, String subscribedTo) {
+    public void toggleSubscription(String subscriber, String subscribedTo) {
         Optional<Subscription> existingSubscription = subscriptionRepository.findBySubscriberAndSubscribedTo(subscriber, subscribedTo);
         if (existingSubscription.isPresent()) {
-            throw new RuntimeException("Already subscribed");
+            subscriptionRepository.delete(existingSubscription.get());
+        } else {
+            Subscription subscription = new Subscription();
+            subscription.setSubscriber(subscriber);
+            subscription.setSubscribedTo(subscribedTo);
+            subscriptionRepository.save(subscription);
         }
-        Subscription subscription = new Subscription();
-        subscription.setSubscriber(subscriber);
-        subscription.setSubscribedTo(subscribedTo);
-        subscriptionRepository.save(subscription);
+    }
+
+    public long countSubscriptions(String username) {
+        return subscriptionRepository.countBySubscribedTo(username);
+    }
+
+    public boolean isSubscribed(String subscriber, String subscribedTo) {
+        return subscriptionRepository.findBySubscriberAndSubscribedTo(subscriber, subscribedTo).isPresent();
     }
 }

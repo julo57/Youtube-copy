@@ -13,6 +13,7 @@ const VideoDetail = () => {
     const [newComment, setNewComment] = useState('');
     const [error, setError] = useState('');
     const [subscribed, setSubscribed] = useState(false);
+    const [subscriptionCount, setSubscriptionCount] = useState(0);
     const [userLikeStatus, setUserLikeStatus] = useState(null); // 'like', 'dislike', or null
 
     useEffect(() => {
@@ -24,7 +25,17 @@ const VideoDetail = () => {
                 setDislikes(response.data.dislikes);
                 setComments(response.data.comments);
 
+                // Fetch subscription count
+                const subResponse = await axios.get(`http://localhost:8080/api/videos/subscriptions/count/${response.data.username}`);
+                setSubscriptionCount(subResponse.data);
+
+                // Check if the user is subscribed
                 if (user) {
+                    const checkSubResponse = await axios.get(`http://localhost:8080/api/videos/check-subscription`, {
+                        params: { subscriber: user.username, subscribedTo: response.data.username }
+                    });
+                    setSubscribed(checkSubResponse.data);
+
                     // Fetch the user's like/dislike status for the video
                     const likeStatusResponse = await axios.get(`http://localhost:8080/api/videos/${id}/user-like-status`, {
                         params: { username: user.username }
@@ -115,7 +126,9 @@ const VideoDetail = () => {
                     'Content-Type': 'application/json'
                 }
             });
-            setSubscribed(true);
+            const newSubscribedState = !subscribed;
+            setSubscribed(newSubscribedState);
+            setSubscriptionCount(newSubscribedState ? subscriptionCount + 1 : subscriptionCount - 1);
         } catch (error) {
             console.error('Error subscribing:', error);
         }
@@ -134,7 +147,9 @@ const VideoDetail = () => {
                     <div className="video-actions">
                         <button onClick={handleLike} disabled={userLikeStatus === 'like'}>Like ({likes})</button>
                         <button onClick={handleDislike} disabled={userLikeStatus === 'dislike'}>Dislike ({dislikes})</button>
-                        {!subscribed && <button onClick={handleSubscribe}>Subscribe</button>}
+                        <button onClick={handleSubscribe}>
+                            {subscribed ? 'Unsubscribe' : 'Subscribe'} ({subscriptionCount})
+                        </button>
                     </div>
                     <div className="comments-section">
                         <h2>Comments</h2>
