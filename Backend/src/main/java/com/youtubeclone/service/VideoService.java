@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,10 +19,12 @@ import com.youtubeclone.model.Comment;
 import com.youtubeclone.model.Subscription;
 import com.youtubeclone.model.UserLikes;
 import com.youtubeclone.model.Video;
+import com.youtubeclone.model.WatchedVideo;
 import com.youtubeclone.repository.CommentRepository;
 import com.youtubeclone.repository.SubscriptionRepository;
 import com.youtubeclone.repository.UserLikesRepository;
 import com.youtubeclone.repository.VideoRepository;
+import com.youtubeclone.repository.WatchedVideoRepository;
 
 @Service
 public class VideoService {
@@ -31,15 +34,17 @@ public class VideoService {
     private final CommentRepository commentRepository;
     private final UserLikesRepository userLikesRepository;
     private final SubscriptionRepository subscriptionRepository;
+    private final WatchedVideoRepository watchedVideoRepository;
 
     public VideoService(@Value("${file.upload-dir}") String uploadDir, VideoRepository videoRepository,
                         CommentRepository commentRepository, UserLikesRepository userLikesRepository,
-                        SubscriptionRepository subscriptionRepository) {
+                        SubscriptionRepository subscriptionRepository, WatchedVideoRepository watchedVideoRepository) {
         this.fileStorageLocation = Paths.get(uploadDir).toAbsolutePath().normalize();
         this.videoRepository = videoRepository;
         this.commentRepository = commentRepository;
         this.userLikesRepository = userLikesRepository;
         this.subscriptionRepository = subscriptionRepository;
+        this.watchedVideoRepository = watchedVideoRepository;
 
         try {
             Files.createDirectories(this.fileStorageLocation);
@@ -146,5 +151,18 @@ public class VideoService {
 
     public boolean isSubscribed(String subscriber, String subscribedTo) {
         return subscriptionRepository.findBySubscriberAndSubscribedTo(subscriber, subscribedTo).isPresent();
+    }
+
+    public void recordWatchHistory(Long videoId, String username) {
+        Video video = videoRepository.findById(videoId).orElseThrow(() -> new ResourceNotFoundException("Video not found"));
+        WatchedVideo watchedVideo = new WatchedVideo();
+        watchedVideo.setVideo(video);
+        watchedVideo.setUsername(username);
+        watchedVideo.setWatchedAt(LocalDateTime.now());
+        watchedVideoRepository.save(watchedVideo);
+    }
+
+    public List<WatchedVideo> getWatchedVideos(String username) {
+        return watchedVideoRepository.findByUsername(username);
     }
 }

@@ -1,0 +1,45 @@
+/* History.css */
+
+.history-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #212121;
+    color: #ffffff;
+    border-radius: 8px;
+}
+
+.history-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.history-list {
+    list-style: none;
+    padding: 0;
+}
+
+.history-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #444444;
+}
+
+.history-item a {
+    color: #3ea6ff;
+    text-decoration: none;
+}
+
+.history-item a:hover {
+    text-decoration: underline;
+}
+
+.watched-at {
+    display: block;
+    margin-top: 5px;
+    color: #aaaaaa;
+}
+
+.error {
+    color: red;
+    margin-bottom: 20px;
+}

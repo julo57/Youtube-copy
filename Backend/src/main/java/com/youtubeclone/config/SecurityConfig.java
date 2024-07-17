@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .csrf().disable()
             .authorizeRequests()
-            .antMatchers("/api/auth/register", "/api/auth/login", "/api/videos/upload", "/api/videos", "/uploads/**").permitAll()
+            .antMatchers("/api/auth/register", "/api/auth/login", "/api/videos/upload", "/api/videos", "/watched/{username}","/uploads/**").permitAll()
             .anyRequest().authenticated()
             .and()
             .sessionManagement()

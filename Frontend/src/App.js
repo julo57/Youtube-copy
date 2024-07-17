@@ -9,6 +9,7 @@ import UserProfile from './components/UserProfile';
 import ProfileMenu from './components/ProfileMenu';
 import Settings from './components/Settings'; 
 import Channel from './components/Channel';
+import History from './components/History';
 import { AuthProvider } from './AuthContext';
 import VideoDetail from './components/VideoDetail';
 import './css/App.css';
@@ -46,6 +47,7 @@ function App() {
                                 <Route path="/profile-menu" component={ProfileMenu} />
                                 <Route path="/settings" component={Settings} />
                                 <Route path="/channel" component={Channel} />
+                                <Route path="/history" component={History} />
                                 <Route path="/home" component={Home} />
                                 <Route exact path="/" component={Home} />
                                 <Route path="*" render={() => <h1>404: Page not found</h1>} />

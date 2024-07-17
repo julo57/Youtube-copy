@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.youtubeclone.model.Comment;
 import com.youtubeclone.model.Video;
+import com.youtubeclone.model.WatchedVideo;
 import com.youtubeclone.service.VideoService;
 
 @RestController
@@ -53,6 +56,11 @@ public class VideoController {
         try {
             Video video = videoService.findById(id);
             if (video != null) {
+                // Get the authenticated username from the security context
+                UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                String currentUsername = userDetails.getUsername();
+                
+                videoService.recordWatchHistory(id, currentUsername);
                 return ResponseEntity.ok(video);
             } else {
                 return ResponseEntity.notFound().build();
@@ -121,6 +129,16 @@ public class VideoController {
         try {
             boolean isSubscribed = videoService.isSubscribed(subscriber, subscribedTo);
             return ResponseEntity.ok(isSubscribed);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @GetMapping("/watched/{username}")
+    public ResponseEntity<List<WatchedVideo>> getWatchedVideos(@PathVariable String username) {
+        try {
+            List<WatchedVideo> watchedVideos = videoService.getWatchedVideos(username);
+            return ResponseEntity.ok(watchedVideos);
         } catch (Exception e) {
             return ResponseEntity.status(500).body(null);
         }
