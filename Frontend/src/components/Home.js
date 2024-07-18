@@ -46,7 +46,7 @@ const Home = () => {
         return shuffled.slice(0, count);
     };
 
-    const randomVideos = getRandomVideos(videos, 5);
+    const randomVideos = getRandomVideos(videos, 6);
 
     return (
         <div className="home-container">
@@ -55,14 +55,16 @@ const Home = () => {
             <div className="videos-container">
                 {randomVideos.map((video) => (
                     <div className="video-card" key={video.id}>
-                        <h2>{video.title}</h2>
-                        <p>{video.description}</p>
                         <Link to={`/watch/${video.id}`}>
-                            <video width="320" height="240" controls>
+                            <video width="100%" controls>
                                 <source src={`http://localhost:8080${video.url}`} type="video/mp4" />
                                 Your browser does not support the video tag.
                             </video>
                         </Link>
+                        <div className="video-info">
+                            <h2>{video.title}</h2>
+                            <p>{video.description}</p>
+                        </div>
                     </div>
                 ))}
             </div>
