@@ -1,5 +1,7 @@
 package com.youtubeclone.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.youtubeclone.model.User;
 import com.youtubeclone.service.JwtService;
 import com.youtubeclone.service.UserService;
+import com.youtubeclone.service.UserSettingsService;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -31,6 +35,9 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private UserSettingsService userSettingsService;
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -38,6 +45,10 @@ public class AuthController {
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         if (userService.checkIfUserExists(user.getUsername())) {
             return ResponseEntity.badRequest().body("Username is already taken");
+        }
+
+        if (userService.checkIfEmailExists(user.getEmail())) {
+            return ResponseEntity.badRequest().body("Email is already taken");
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -60,7 +71,7 @@ public class AuthController {
 
             if (!isPasswordMatch) {
                 System.out.println("Password mismatch for user: " + loginRequest.getUsername());
-                throw new Exception("Invalid password");
+                return ResponseEntity.status(401).body("Invalid username or password");
             }
 
             Authentication authentication = authenticationManager.authenticate(
@@ -80,5 +91,19 @@ public class AuthController {
     @GetMapping("/user")
     public ResponseEntity<UserDetails> getUser(@AuthenticationPrincipal UserDetails userDetails) {
         return ResponseEntity.ok(userDetails);
+    }
+
+    @GetMapping("/subscriptions/{username}")
+    public ResponseEntity<List<User>> getUserSubscriptions(@PathVariable String username) {
+        try {
+            List<User> subscriptions = userSettingsService.getSubscriptions(username);
+            if (subscriptions != null && !subscriptions.isEmpty()) {
+                return ResponseEntity.ok(subscriptions);
+            } else {
+                return ResponseEntity.status(404).body(null); // Return 404 if no subscriptions are found
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null); // Return 500 in case of an error
+        }
     }
 }

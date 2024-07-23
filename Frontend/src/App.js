@@ -12,6 +12,7 @@ import Channel from './components/Channel';
 import History from './components/History';
 import { AuthProvider } from './AuthContext';
 import VideoDetail from './components/VideoDetail';
+import Subscriptions from './components/Subscriptions';
 import './css/App.css';
 
 
@@ -49,6 +50,7 @@ function App() {
                                 <Route path="/channel" component={Channel} />
                                 <Route path="/history" component={History} />
                                 <Route path="/home" component={Home} />
+                                <Route path="/subscriptions" component={Subscriptions} />
                                 <Route exact path="/" component={Home} />
                                 <Route path="*" render={() => <h1>404: Page not found</h1>} />
                             </Switch>

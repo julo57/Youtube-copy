@@ -75,6 +75,10 @@ public class VideoService {
         return videoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Video not found"));
     }
 
+    public List<Video> findVideosByUsername(String username) {
+        return videoRepository.findByUsername(username);
+    }
+
     public void likeVideo(Long id, String username) {
         Video video = videoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Video not found"));
         Optional<UserLikes> userLikesOpt = userLikesRepository.findByUsernameAndVideoId(username, id);

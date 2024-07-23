@@ -7,38 +7,45 @@ import '../css/Register.css'; // Importujemy CSS
 const Register = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [redirectToProfile, setRedirectToProfile] = useState(false);
+    const [email, setEmail] = useState('');
+    const [error, setError] = useState('');
+    const [redirectToLogin, setRedirectToLogin] = useState(false);
     const { user } = useAuth();
 
     const handleRegister = async (e) => {
         e.preventDefault();
 
         if (password.length < 8) {
-            alert('Password must be at least 8 characters long');
+            setError('Password must be at least 8 characters long');
             return;
         }
-
-        // Additional validation rules can be added here
 
         try {
             const response = await axios.post('http://localhost:8080/api/auth/register', {
                 username,
-                password
+                password,
+                email
             });
             console.log('Registration successful:', response.data);
-            setRedirectToProfile(true);
+            setRedirectToLogin(true);
         } catch (error) {
             console.error('There was an error registering!', error);
+            if (error.response && error.response.data) {
+                setError(error.response.data);
+            } else {
+                setError('There was an error registering!');
+            }
         }
     };
 
-    if (redirectToProfile || user) {
-        return <Redirect to="/Login" />;
+    if (redirectToLogin || user) {
+        return <Redirect to="/login" />;
     }
 
     return (
         <div className="form-container">
             <h2>Register</h2>
+            {error && <div className="error">{error}</div>}
             <form onSubmit={handleRegister}>
                 <div className="form-group">
                     <label htmlFor="reg-username">Username</label>
@@ -47,6 +54,16 @@ const Register = () => {
                         id="reg-username" 
                         value={username} 
                         onChange={(e) => setUsername(e.target.value)} 
+                        required 
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="reg-email">Email</label>
+                    <input 
+                        type="email" 
+                        id="reg-email" 
+                        value={email} 
+                        onChange={(e) => setEmail(e.target.value)} 
                         required 
                     />
                 </div>

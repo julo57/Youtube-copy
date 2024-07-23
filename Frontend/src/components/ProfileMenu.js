@@ -4,7 +4,7 @@ import { useAuth } from '../AuthContext';
 import '../css/ProfileMenu.css';
 
 const ProfileMenu = () => {
-    const { user, logout } = useAuth();
+    const { user, logout,email } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
     const [showLogoutModal, setShowLogoutModal] = useState(false);
     const menuRef = useRef(null);
@@ -43,7 +43,7 @@ const ProfileMenu = () => {
                     <div className="profile-menu-header">
                         <div className="profile-info">
                             <h4>{user ? user.username : 'Guest'}</h4>
-                            <p>{user ? `@${user.username}` : '@guest'}</p>
+                            <p>{user ? `@${user.email}` : '@guest'}</p>
                         </div>
                     </div>
                     <div className="profile-menu-links">

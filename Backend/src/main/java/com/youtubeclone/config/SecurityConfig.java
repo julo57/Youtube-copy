@@ -37,8 +37,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .csrf().disable()
             .authorizeRequests()
-            .antMatchers("/api/auth/register", "/api/auth/login", "/api/videos/upload", "/api/videos", "/watched/{username}","/uploads/**").permitAll()
-            .anyRequest().authenticated()
+            .antMatchers("/api/auth/register", "/api/auth/login", "/uploads/**").permitAll() // Allow registration, login, and static file access without authentication
+            .antMatchers("/api/videos/**").permitAll() // Allow video-related endpoints without authentication
+            .antMatchers("/api/users/settings/**").authenticated() // Require authentication for user settings
+            .antMatchers("/api/users/subscriptions/**").authenticated() // Require authentication for subscriptions
+            .anyRequest().authenticated() // Require authentication for any other request
             .and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

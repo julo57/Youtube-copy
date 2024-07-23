@@ -143,4 +143,14 @@ public class VideoController {
             return ResponseEntity.status(500).body(null);
         }
     }
+
+    @GetMapping("/user/{username}/videos")
+    public ResponseEntity<List<Video>> getUserVideos(@PathVariable String username) {
+        try {
+            List<Video> videos = videoService.findVideosByUsername(username);
+            return ResponseEntity.ok(videos);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
 }

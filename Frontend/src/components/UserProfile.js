@@ -52,6 +52,10 @@ const UserProfile = () => {
         history.push('/channel');
     };
 
+    const handleGoToSubscriptions = () => {
+        history.push('/subscriptions');
+    };
+
     return (
         <div className="user-profile-container">
             <h1>User Profile</h1>
@@ -92,6 +96,7 @@ const UserProfile = () => {
                         <button type="submit" className="upload-button">Upload Video</button>
                     </form>
                     <button onClick={handleGoToChannel} className="channel-button">Go to My Channel</button>
+                    <button onClick={handleGoToSubscriptions} className="subscriptions-button">View Subscriptions</button>
                 </div>
             ) : (
                 <p>Please log in to see your profile.</p>
