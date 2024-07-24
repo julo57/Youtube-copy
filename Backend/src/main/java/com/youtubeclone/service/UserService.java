@@ -1,16 +1,3 @@
-package com.youtubeclone.service;
-
-import java.util.ArrayList;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-
-import com.youtubeclone.model.User;
-import com.youtubeclone.repository.UserRepository;
-
 @Service
 public class UserService implements UserDetailsService {
 
@@ -25,13 +12,12 @@ public class UserService implements UserDetailsService {
         return userRepository.existsByUsername(username);
     }
 
-    public void saveUser(User user) {
-        userRepository.save(user);
+    public boolean checkIfEmailExists(String email) {
+        return userRepository.existsByEmail(email);
     }
 
-    public boolean isPasswordValid(String password) {
-        // Example: password should be at least 8 characters long
-        return password.length() >= 8;
+    public void saveUser(User user) {
+        userRepository.save(user);
     }
 
     public User findByUsername(String username) {
@@ -39,15 +25,22 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
     }
 
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public void setUserRole(String username, String role) {
+        User user = findByUsername(username);
+        user.setRoles(List.of(role));
+        userRepository.save(user);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = findByUsername(username);
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), new ArrayList<>());
-    }
-    public void deleteUser(User user) {
-        userRepository.delete(user);
-    }
-    public boolean  checkIfEmailExists(String email) {
-        return userRepository.existsByEmail(email);
+        List<GrantedAuthority> authorities = user.getRoles().stream()
+                                             .map(SimpleGrantedAuthority::new)
+                                             .collect(Collectors.toList());
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
 }

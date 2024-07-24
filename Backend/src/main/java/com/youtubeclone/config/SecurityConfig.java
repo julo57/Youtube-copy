@@ -7,7 +7,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -41,6 +40,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/videos/**").permitAll() // Allow video-related endpoints without authentication
             .antMatchers("/api/users/settings/**").authenticated() // Require authentication for user settings
             .antMatchers("/api/users/subscriptions/**").authenticated() // Require authentication for subscriptions
+            .antMatchers("/api/admin/**").hasAuthority("ADMIN") // Restrict access to admin endpoints
+            .antMatchers("/api/moderator/**").hasAuthority("MODERATOR") // Restrict access to moderator endpoints
             .anyRequest().authenticated() // Require authentication for any other request
             .and()
             .sessionManagement()

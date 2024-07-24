@@ -1,7 +1,6 @@
 package com.youtubeclone.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -52,6 +51,7 @@ public class AuthController {
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles(List.of("USER")); // Set default role as USER
         userService.saveUser(user);
         return ResponseEntity.ok("User registered successfully");
     }
@@ -89,8 +89,9 @@ public class AuthController {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<UserDetails> getUser(@AuthenticationPrincipal UserDetails userDetails) {
-        return ResponseEntity.ok(userDetails);
+    public ResponseEntity<User> getUser(@AuthenticationPrincipal UserDetails userDetails) {
+        User user = userService.findByUsername(userDetails.getUsername());
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/subscriptions/{username}")

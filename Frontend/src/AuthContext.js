@@ -13,8 +13,12 @@ export const AuthProvider = ({ children }) => {
         if (token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             axios.get('http://localhost:8080/api/auth/user')
-                .then(response => setUser(response.data))
-                .catch(() => {
+                .then(response => {
+                    console.log('Fetched user:', response.data);  // Debug log
+                    setUser(response.data);
+                })
+                .catch(error => {
+                    console.error('Error fetching user:', error);
                     localStorage.removeItem('token');
                     setUser(null);
                 });
@@ -25,10 +29,11 @@ export const AuthProvider = ({ children }) => {
         try {
             const response = await axios.post('http://localhost:8080/api/auth/login', { username, password });
             const token = response.data;
-            console.log("Received token:", token);  // Log the received token
+            console.log("Received token:", token);  // Debug log
             localStorage.setItem('token', token);
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             const userResponse = await axios.get('http://localhost:8080/api/auth/user');
+            console.log('Fetched user after login:', userResponse.data);  // Debug log
             setUser(userResponse.data);
         } catch (error) {
             console.error('There was an error logging in!', error);

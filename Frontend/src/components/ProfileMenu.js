@@ -4,7 +4,7 @@ import { useAuth } from '../AuthContext';
 import '../css/ProfileMenu.css';
 
 const ProfileMenu = () => {
-    const { user, logout,email } = useAuth();
+    const { user, logout } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
     const [showLogoutModal, setShowLogoutModal] = useState(false);
     const menuRef = useRef(null);
@@ -29,13 +29,17 @@ const ProfileMenu = () => {
 
     const handleLogout = () => {
         logout();
-        setShowLogoutModal(false); // Close the modal
+        setShowLogoutModal(false);
         history.push('/login');
     };
 
+    useEffect(() => {
+        console.log('User object:', user);
+    }, [user]);
+
     return (
         <div className="profile-menu-container" ref={menuRef}>
-            <div className="profile-icon" onClick={toggleMenu}>
+            <div className="profile-icon" onClick={toggleMenu} tabIndex="0" role="button" aria-label="Profile menu">
                 <span>Profile</span>
             </div>
             {isOpen && (
@@ -43,13 +47,12 @@ const ProfileMenu = () => {
                     <div className="profile-menu-header">
                         <div className="profile-info">
                             <h4>{user ? user.username : 'Guest'}</h4>
-                            <p>{user ? `@${user.email}` : '@guest'}</p>
+                            <p>{user && user.email ? `@${user.email}` : '@guest'}</p>
                         </div>
                     </div>
                     <div className="profile-menu-links">
-                        <Link to="/profile">Wyświetl swój kanał</Link>
-                        <Link to="/Settings">Ustawienia</Link>
-                        
+                        <Link to="/profile" onClick={() => setIsOpen(false)}>Wyświetl swój kanał</Link>
+                        <Link to="/settings" onClick={() => setIsOpen(false)}>Ustawienia</Link>
                         {user && <button onClick={() => setShowLogoutModal(true)}>Wyloguj się</button>}
                     </div>
                 </div>
