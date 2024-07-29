@@ -1,3 +1,20 @@
+package com.youtubeclone.service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import com.youtubeclone.model.User;
+import com.youtubeclone.repository.UserRepository;
+
 @Service
 public class UserService implements UserDetailsService {
 
@@ -31,7 +48,9 @@ public class UserService implements UserDetailsService {
 
     public void setUserRole(String username, String role) {
         User user = findByUsername(username);
-        user.setRoles(List.of(role));
+        List<String> roles = new ArrayList<>(user.getRoles());
+        roles.add(role);
+        user.setRoles(roles);
         userRepository.save(user);
     }
 
