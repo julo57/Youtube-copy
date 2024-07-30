@@ -17,12 +17,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.youtubeclone.exception.ResourceNotFoundException;
 import com.youtubeclone.model.Comment;
 import com.youtubeclone.model.Subscription;
+import com.youtubeclone.model.User;
 import com.youtubeclone.model.UserLikes;
 import com.youtubeclone.model.Video;
 import com.youtubeclone.model.WatchedVideo;
 import com.youtubeclone.repository.CommentRepository;
 import com.youtubeclone.repository.SubscriptionRepository;
 import com.youtubeclone.repository.UserLikesRepository;
+import com.youtubeclone.repository.UserRepository;
 import com.youtubeclone.repository.VideoRepository;
 import com.youtubeclone.repository.WatchedVideoRepository;
 
@@ -35,16 +37,19 @@ public class VideoService {
     private final UserLikesRepository userLikesRepository;
     private final SubscriptionRepository subscriptionRepository;
     private final WatchedVideoRepository watchedVideoRepository;
+    private final UserRepository userRepository;
 
     public VideoService(@Value("${file.upload-dir}") String uploadDir, VideoRepository videoRepository,
                         CommentRepository commentRepository, UserLikesRepository userLikesRepository,
-                        SubscriptionRepository subscriptionRepository, WatchedVideoRepository watchedVideoRepository) {
+                        SubscriptionRepository subscriptionRepository, WatchedVideoRepository watchedVideoRepository,
+                        UserRepository userRepository) {
         this.fileStorageLocation = Paths.get(uploadDir).toAbsolutePath().normalize();
         this.videoRepository = videoRepository;
         this.commentRepository = commentRepository;
         this.userLikesRepository = userLikesRepository;
         this.subscriptionRepository = subscriptionRepository;
         this.watchedVideoRepository = watchedVideoRepository;
+        this.userRepository = userRepository;
 
         try {
             Files.createDirectories(this.fileStorageLocation);
@@ -137,7 +142,12 @@ public class VideoService {
         return commentRepository.save(comment);
     }
 
-    public void toggleSubscription(String subscriber, String subscribedTo) {
+    public void toggleSubscription(String subscriberUsername, String subscribedToUsername) {
+        User subscriber = userRepository.findByUsername(subscriberUsername)
+                .orElseThrow(() -> new ResourceNotFoundException("Subscriber not found"));
+        User subscribedTo = userRepository.findByUsername(subscribedToUsername)
+                .orElseThrow(() -> new ResourceNotFoundException("User to subscribe to not found"));
+
         Optional<Subscription> existingSubscription = subscriptionRepository.findBySubscriberAndSubscribedTo(subscriber, subscribedTo);
         if (existingSubscription.isPresent()) {
             subscriptionRepository.delete(existingSubscription.get());
@@ -150,10 +160,17 @@ public class VideoService {
     }
 
     public long countSubscriptions(String username) {
-        return subscriptionRepository.countBySubscribedTo(username);
+        User subscribedTo = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return subscriptionRepository.countBySubscribedTo(subscribedTo);
     }
 
-    public boolean isSubscribed(String subscriber, String subscribedTo) {
+    public boolean isSubscribed(String subscriberUsername, String subscribedToUsername) {
+        User subscriber = userRepository.findByUsername(subscriberUsername)
+                .orElseThrow(() -> new ResourceNotFoundException("Subscriber not found"));
+        User subscribedTo = userRepository.findByUsername(subscribedToUsername)
+                .orElseThrow(() -> new ResourceNotFoundException("User to subscribe to not found"));
+
         return subscriptionRepository.findBySubscriberAndSubscribedTo(subscriber, subscribedTo).isPresent();
     }
 

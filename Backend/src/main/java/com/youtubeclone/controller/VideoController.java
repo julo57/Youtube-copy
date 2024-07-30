@@ -31,10 +31,13 @@ public class VideoController {
     @PostMapping("/upload")
     public ResponseEntity<String> uploadVideo(@RequestParam("file") MultipartFile file,
                                               @RequestParam("title") String title,
-                                              @RequestParam("description") String description,
-                                              @RequestParam("username") String username) {
+                                              @RequestParam("description") String description) {
         try {
-            videoService.saveVideo(file, title, description, username);
+            // Get the authenticated username from the security context
+            UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String currentUsername = userDetails.getUsername();
+
+            videoService.saveVideo(file, title, description, currentUsername);
             return ResponseEntity.ok("Video uploaded successfully");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Video upload failed: " + e.getMessage());
@@ -71,10 +74,13 @@ public class VideoController {
     }
 
     @PostMapping("/{id}/like")
-    public ResponseEntity<Void> likeVideo(@PathVariable Long id, @RequestBody Map<String, String> request) {
+    public ResponseEntity<Void> likeVideo(@PathVariable Long id) {
         try {
-            String username = request.get("username");
-            videoService.likeVideo(id, username);
+            // Get the authenticated username from the security context
+            UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String currentUsername = userDetails.getUsername();
+
+            videoService.likeVideo(id, currentUsername);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(500).body(null);
@@ -82,10 +88,13 @@ public class VideoController {
     }
 
     @PostMapping("/{id}/dislike")
-    public ResponseEntity<Void> dislikeVideo(@PathVariable Long id, @RequestBody Map<String, String> request) {
+    public ResponseEntity<Void> dislikeVideo(@PathVariable Long id) {
         try {
-            String username = request.get("username");
-            videoService.dislikeVideo(id, username);
+            // Get the authenticated username from the security context
+            UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String currentUsername = userDetails.getUsername();
+
+            videoService.dislikeVideo(id, currentUsername);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(500).body(null);
@@ -105,8 +114,11 @@ public class VideoController {
     @PostMapping("/subscribe")
     public ResponseEntity<Void> subscribeToUser(@RequestBody Map<String, String> request) {
         try {
-            String subscriber = request.get("subscriber");
             String subscribedTo = request.get("subscribedTo");
+            // Get the authenticated username from the security context
+            UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String subscriber = userDetails.getUsername();
+
             videoService.toggleSubscription(subscriber, subscribedTo);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
@@ -125,8 +137,12 @@ public class VideoController {
     }
 
     @GetMapping("/check-subscription")
-    public ResponseEntity<Boolean> checkSubscription(@RequestParam("subscriber") String subscriber, @RequestParam("subscribedTo") String subscribedTo) {
+    public ResponseEntity<Boolean> checkSubscription(@RequestParam("subscribedTo") String subscribedTo) {
         try {
+            // Get the authenticated username from the security context
+            UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String subscriber = userDetails.getUsername();
+
             boolean isSubscribed = videoService.isSubscribed(subscriber, subscribedTo);
             return ResponseEntity.ok(isSubscribed);
         } catch (Exception e) {
